@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		@keyframes elastic-grow{
+			from: {
+				transform: scale(0);
+			}
+			70%: {
+				transform: scale(1.1);
+				animation-timimg-function:{
+					cubic-bezier(.1,.25,1,.25);/*反向ease*/
+				};
+			};
+		}
+		input:not(:focus) + .callout {
+			transform: scale(0);
+		}
+		input:focus +.callout {
+			animation:elastic-grow .5s;
+		}
+		.callout {
+			display: block;
+			padding:0 5px;
+			transition: .5s transform;
+			transform-origin: 1.4em-.4em;
+			width: 150px;
+			height: 30px;
+			background: #ffd000;
+			line-height: 30px;
+			position: relative;
+			left: 93px;
+			top: 2px;
+		}
+		.callout:after {
+			content: '';
+			border: 1px solid #ffd000;
+			position: absolute;
+			top: -3px;
+			left: 10px;
+			border-bottom: transparent;
+			border-right: transparent;
+			display: inline-block;
+			width: 6px;
+			height: 6px;
+			transform: rotateZ(45deg);
+			background: #ffd000;
+		}
+	</style>
+</head>
+<body>
+	<label>
+		Your name:
+		<input type="text" id="username" />
+		<span class="callout">我是一个提示框!</span>
+	</label>
+</body>
+</html>
