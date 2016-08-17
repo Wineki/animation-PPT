@@ -1,0 +1,28 @@
+<!-- http://simurai.com/blog/2012/12/03/step-animation -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		@keyframes loader{
+			to {
+				background-position: -800px 0;
+			}
+		}
+		.loader{
+			width: 100px;
+			height: 100px;
+			background: url(img/loader.png) 0 0;
+			/*animation: loader 1s infinite linear;*/
+			animation: loader 1s infinite steps(8);
+			text-indent: 100%;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+	<div class="loader">Loading...</div>
+</body>
+</html>

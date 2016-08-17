@@ -5,20 +5,18 @@
 	<title>Document</title>
 	<style>
 		@keyframes elastic-grow{
-			from: {
+			from {
 				transform: scale(0);
 			}
-			70%: {
+			70% {
 				transform: scale(1.1);
-				animation-timimg-function:{
-					cubic-bezier(.1,.25,1,.25);/*反向ease*/
-				};
+				animation-timing-function: cubic-bezier(.1,.25,1,.25);/*反向ease*/
 			};
 		}
 		input:not(:focus) + .callout {
 			transform: scale(0);
 		}
-		input:focus +.callout {
+		input:focus + .callout {
 			animation:elastic-grow .5s;
 		}
 		.callout {
