@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.sample1,.sample2,.sample3,.sample4 {
+			margin:2px;
+			width:200px;
+			height:100px;
+			background:#00ffff;
+			position:relative;
+			-moz-animation:anim1 5s infinite;
+			-webkit-animation:anim1 5s infinite;
+			-o-animation:anim1 5s infinite;
+			animation:anim1 5s infinite;
+		}
+		.sample1{
+			-moz-animation-direction:normal;
+			-webkit-animation-direction:normal;
+			-o-animation-direction:normal;
+			animation-direction:normal;
+		}
+		.sample2{
+			-moz-animation-direction:reverse;
+			-webkit-animation-direction:reverse;
+			-o-animation-direction:reverse;
+			animation-direction:reverse;
+		}
+		.sample3{
+			-moz-animation-direction:alternate;
+			-webkit-animation-direction:alternate;
+			-o-animation-direction:alternate;
+			animation-direction:alternate;
+		}
+		.sample4{
+			-moz-animation-direction:alternate-reverse;
+			-webkit-animation-direction:alternate-reverse;
+			-o-animation-direction:alternate-reverse;
+			animation-direction:alternate-reverse;
+		}
+		@-moz-keyframes anim1 {
+			from{left:0px;}
+			to {left:250px;}
+		}
+		@-webkit-keyframes anim1 {
+			from{left:0px;}
+			to {left:250px;}
+		}
+		@-o-keyframes anim1 {
+			from{left:0px;}
+			to {left:250px;}
+		}
+	</style>
+</head>
+<body>
+	<div class="sample1">animation-direction:normal</div>
+	<div class="sample2">animation-direction:reverse</div>
+	<div class="sample3">使用animation-direction:alternate</div>
+	<div class="sample4">使用animation-direction:alternate-reverse</div>
+</body>
+</html>
