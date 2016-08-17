@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Spirate</title>
+</head>
+<body>
+	<input type="button" id="animateButton"></input>
+	<canvas id="canvas"></canvas>
+</body>
+<script>
+	var canvas = document.getElementById("canvas"),
+	context = canvas.getContext('2d'),
+	animationButton = document.getElementById("animateButton");
+	spritesheet = new Image(),
+	runnerCells = [
+		{left: 0, top:10, width: 90, height: 130},
+		{left: 90, top:10, width: 90, height: 130},
+		{left: 180, top:10, width: 90, height: 130},
+		{left: 270, top:10, width: 90, height: 130},
+		{left: 300, top:10, width: 90, height: 130},
+		{left: 390, top:10, width: 90, height: 130},
+		{left: 480, top:10, width: 90, height: 130},
+		{left: 570, top:10, width: 90, height: 130},
+		{left: 660, top:10, width: 90, height: 130},
+	];
+	
+	runInPlace = {
+		lastAdvance: 0,
+		PAGEFLIP_INTERVAL: 100,
+		
+		execute: function(sprite,context,time){
+			if(time - this.lastAdvance > this.PAGEFLIP_INTERVAL){
+				sprite.painter.advance();
+				this.lastAdvance = time;
+			}
+		}
+	},
+	moveLeftToRight = {
+		lastMove: 0,
+		execute: function(sprite,context,time){
+			sprite.left -= sprite.velocityX * ((time - this.lastMove) / 1000);
+			if(sprite.left < 0){
+				sprite.left = canvas.width;
+			}
+			this.lastMove = time;
+		}
+		
+	};
+	
+	
+	//Constructor
+	var Sprite = function(name,painter,behaviors){
+		if(name !== undefined){
+			this.name = name;
+		}
+		if(painter !== undefined){
+			this.painter = painter;
+		}
+		
+		this.top = 0;
+		this.left = 0;
+		this.width = 90;
+		this.height = 130;
+		this.velocityX = 0;
+		this.velocityY = 0;
+		this.visible = true;
+		this.animation = false;
+		this.behaviors = behaviors || [];
+		
+		return this;
+	};
+	Sprite.prototype = {
+		paint: function(context){
+			if(this.painter !== undefined && this.visible){
+				this.painter.paint(this,context);
+			}
+		},
+		update: function(context,time){
+			for(var i = 0; i<this.behaviors.length; ++i){
+				this.behaviors[i].execute(this,context,time);
+			}
+		}
+	};
+	
+	
+	
+	SpriteSheetPainter= function(cells){
+		this.cells = cells || {};
+		this.cellIndex = 0;
+	}
+	SpriteSheetPainter.prototype = {
+		advance: function(){
+			if(this.cellIndex == this.cells.length-1){
+				this.cellIndex = 0;
+			}else{
+				this.cellIndex++;
+			}
+		},
+		paint: function(sprite,context){
+			var cell = this.cells[this.cellIndex];
+			context.drawImage(spritesheet,cell.left,cell.top,cell.width,cell.height,sprite.left,sprite.top,sprite.width,sprite.height);
+			//context.drawImage(spritesheet,cell.left,10,90,120,30,0,90,130);
+		}
+	}
+	
+	
+	
+
+	sprite = new Sprite('runner', new SpriteSheetPainter(runnerCells),[runInPlace]);
+	
+	function drawBackground(){
+		var STEP_Y = 12,
+			i = context.canvas.height;
+		while(i < STEP_Y * 4){
+			context.beginPath();
+			context.moveTo(0,i);
+			context.lineTo(context.canvas.width, i);
+			context.stroke();
+			i -= STEP_Y;
+		}
+	}
+	
+	function pauseAnimation(){
+		animationButton.value = 'Animate';
+		pause = true;
+	}
+	
+	
+	function startAnimation(){
+		animateButton.value = 'pause';
+		paused = false;
+		lastAdvance =+ 0.01;
+		window.requestAnimationFrame(animate);
+	}
+	
+	
+	//Animation
+	
+	function animate(time){
+		context.clearRect(0,0,canvas.width,canvas.height);
+		drawBackground();
+		context.drawImage(spritesheet,660,10,90,130,0,0,90,130);
+		sprite.update(context,time);
+		sprite.paint(context);
+		window.requestAnimationFrame(animate);
+	}
+	animationButton.onclick = function(e){
+		if(animationButton.value === 'Animate'){
+			startAnimation();
+		}else{
+			pauseAnimation();
+		}
+	};
+	
+	//Initialization
+	spritesheet.src = './img/player.png';
+	
+	spritesheet.onload = function(e) {
+		//context.drawImage(spritesheet,210,10,90,120,0,0,90,130);
+	};
+	sprite.left = 100;
+	sprite.top = 0;
+	sprite.strokeStyle = 'lightgray';
+	context.lineWidth = 0.5;
+	
+	drawBackground();
+</script>
+</html>
