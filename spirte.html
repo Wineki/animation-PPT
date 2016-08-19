@@ -5,7 +5,6 @@
 	<title>Spirate</title>
 </head>
 <body>
-	<input type="button" id="animateButton"></input>
 	<canvas id="canvas"></canvas>
 </body>
 <script>
@@ -14,21 +13,18 @@
 	animationButton = document.getElementById("animateButton");
 	spritesheet = new Image(),
 	runnerCells = [
-		{left: 0, top:10, width: 90, height: 130},
-		{left: 90, top:10, width: 90, height: 130},
-		{left: 180, top:10, width: 90, height: 130},
-		{left: 270, top:10, width: 90, height: 130},
-		{left: 300, top:10, width: 90, height: 130},
-		{left: 390, top:10, width: 90, height: 130},
-		{left: 480, top:10, width: 90, height: 130},
-		{left: 570, top:10, width: 90, height: 130},
-		{left: 660, top:10, width: 90, height: 130},
+		{left: 0, top:10, width: 80, height: 130},
+		{left: 95.7, top:10, width: 80, height: 130},
+		{left: 191.4, top:10, width: 80, height: 130},
+		{left: 287.1, top:10, width: 80, height: 130},
+		{left: 382.85, top:10, width: 80, height: 130},
+		{left: 478.6, top:10, width: 80, height: 130},
+		{left: 574.3, top:10, width: 80, height: 130}
 	];
 	
 	runInPlace = {
 		lastAdvance: 0,
-		PAGEFLIP_INTERVAL: 100,
-		
+		PAGEFLIP_INTERVAL: 90,
 		execute: function(sprite,context,time){
 			if(time - this.lastAdvance > this.PAGEFLIP_INTERVAL){
 				sprite.painter.advance();
@@ -70,6 +66,8 @@
 		
 		return this;
 	};
+	
+	
 	Sprite.prototype = {
 		paint: function(context){
 			if(this.painter !== undefined && this.visible){
@@ -100,7 +98,6 @@
 		paint: function(sprite,context){
 			var cell = this.cells[this.cellIndex];
 			context.drawImage(spritesheet,cell.left,cell.top,cell.width,cell.height,sprite.left,sprite.top,sprite.width,sprite.height);
-			//context.drawImage(spritesheet,cell.left,10,90,120,30,0,90,130);
 		}
 	}
 	
@@ -110,7 +107,7 @@
 	sprite = new Sprite('runner', new SpriteSheetPainter(runnerCells),[runInPlace]);
 	
 	function drawBackground(){
-		var STEP_Y = 12,
+		var STEP_Y = 9,
 			i = context.canvas.height;
 		while(i < STEP_Y * 4){
 			context.beginPath();
@@ -121,49 +118,38 @@
 		}
 	}
 	
-	function pauseAnimation(){
-		animationButton.value = 'Animate';
-		pause = true;
-	}
+	// function pauseAnimation(){
+	// 	animationButton.value = 'Animate';
+	// 	pause = true;
+	// }
 	
 	
-	function startAnimation(){
-		animateButton.value = 'pause';
-		paused = false;
-		lastAdvance =+ 0.01;
-		window.requestAnimationFrame(animate);
-	}
+	// function startAnimation(){
+	// 	animateButton.value = 'pause';
+	// 	paused = false;
+	// 	lastAdvance =+ 0.01;
+	// 	window.requestAnimationFrame(animate);
+	// }
 	
 	
 	//Animation
 	
 	function animate(time){
 		context.clearRect(0,0,canvas.width,canvas.height);
-		drawBackground();
-		context.drawImage(spritesheet,660,10,90,130,0,0,90,130);
+		//drawBackground();
+		//context.drawImage(spritesheet,660,10,90,130,0,0,90,130);
 		sprite.update(context,time);
 		sprite.paint(context);
 		window.requestAnimationFrame(animate);
 	}
-	animationButton.onclick = function(e){
-		if(animationButton.value === 'Animate'){
-			startAnimation();
-		}else{
-			pauseAnimation();
-		}
-	};
-	
+	window.requestAnimationFrame(animate);
 	//Initialization
 	spritesheet.src = './img/player.png';
-	
-	spritesheet.onload = function(e) {
-		//context.drawImage(spritesheet,210,10,90,120,0,0,90,130);
-	};
-	sprite.left = 100;
+	sprite.left = 0;
 	sprite.top = 0;
 	sprite.strokeStyle = 'lightgray';
 	context.lineWidth = 0.5;
 	
-	drawBackground();
+	//drawBackground();
 </script>
 </html>
